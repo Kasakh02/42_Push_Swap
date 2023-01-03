@@ -6,19 +6,27 @@
 /*   By: hcorrea- <hcorrea-@student.42lisboa.pt>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:24:55 by hcorrea-          #+#    #+#             */
-/*   Updated: 2022/12/06 15:39:39 by hcorrea-         ###   ########.fr       */
+/*   Updated: 2023/01/03 15:10:14 by hcorrea-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	*push_swap(char a, ...)
+int	valid_input (char **argv, int argc)
 {
-	int	i;
-	va_list	ap;
-
-	va_start(ap, a);
-	i = 0;
 	
-	va_end(ap);
+}
+
+int	main(char **argv, int argc)
+{
+	if (argc < 2 || !valid_input(argv, argc))
+	{
+		ft_printf("Error\n");
+		exit (1);
+	}
+
+	t_list	*stack_a;
+	t_list	*stack_b;
+	
+	stack_a = new_stack(argv[0]);
 }
