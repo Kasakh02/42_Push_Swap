@@ -3,43 +3,70 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hcorrea- <hcorrea-@student.42lisboa.pt>    +#+  +:+       +#+         #
+#    By: hcorrea- <hcorrea-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/11 17:36:38 by hcorrea-          #+#    #+#              #
-#    Updated: 2022/11/24 10:34:07 by hcorrea-         ###   ########.fr        #
+#    Updated: 2023/01/13 11:57:55 by hcorrea-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CFLAGS = -Wall -Wextra -Werror
+GREEN	=	\033[0;32m
+RED		=	\033[0;31m
+YELLOW	=	\033[0;33m
+END		=	\033[0m
+
+CFLAGS	=	-Wall -Wextra -Werror -I$(INC_DIR)
 
 NAME 	= 	libft.a
 
-SRC 	= 	ft_memset ft_bzero ft_memcpy ft_memmove ft_memchr\
-			ft_memcmp ft_strlen ft_strlcpy ft_strlcat ft_strchr ft_strrchr\
-			ft_substr ft_putchar_fd ft_putstr_fd ft_putendl_fd ft_putnbr_fd\
-			ft_strnstr ft_strncmp ft_atoi ft_isalpha ft_isdigit ft_isalnum\
-			ft_isascii ft_isprint ft_toupper ft_tolower ft_calloc ft_strdup\
-			ft_strjoin ft_strtrim ft_strmapi ft_striteri ft_itoa ft_split\
+SRC 	= 	src/ft_memset.c src/ft_bzero.c src/ft_memcpy.c src/ft_memmove.c src/ft_memchr.c\
+			src/ft_memcmp.c src/ft_strlen.c src/ft_strlcpy.c src/ft_strlcat.c src/ft_strchr.c src/ft_strrchr.c\
+			src/ft_substr.c src/ft_putchar_fd.c src/ft_putstr_fd.c src/ft_putendl_fd.c src/ft_putnbr_fd.c\
+			src/ft_strnstr.c src/ft_strncmp.c src/ft_atoi.c src/ft_isalpha.c src/ft_isdigit.c src/ft_isalnum.c\
+			src/ft_isascii.c src/ft_isprint.c src/ft_toupper.c src/ft_tolower.c src/ft_calloc.c src/ft_strdup.c\
+			src/ft_strjoin.c src/ft_strtrim.c src/ft_strmapi.c src/ft_striteri.c src/ft_itoa.c src/ft_split.c\
 
-BONUS 	= 	ft_lstnew ft_lstadd_front ft_lstsize ft_lstlast ft_lstadd_back\
-			ft_lstdelone ft_lstclear ft_lstiter ft_lstmap\
+BONUS 	= 	bonus/ft_lstnew.c bonus/ft_lstadd_front.c bonus/ft_lstsize.c bonus/ft_lstlast.c bonus/ft_lstadd_back.c\
+			bonus/ft_lstdelone.c bonus/ft_lstclear.c bonus/ft_lstiter.c bonus/ft_lstmap.c\
 
 RM 		=	rm -rf
 
-all:		$(NAME)
+OBJ		=	$(SRC:src/%.c=$(OBJ_DIR)/%.o)
+OBJ_B	=	$(BONUS:bonus/%.c=$(OBJ_DIR)/%.o)
+INC_DIR	=	inc
+OBJ_DIR	=	obj
 
-$(NAME): 	$(SRC:=.o)
-			ar -rcs $(NAME) $(SRC:=.o)
-			
-clean:
-			$(RM)	$(SRC:=.o) $(BONUS:=.o)
-	
-fclean: 	clean
-			$(RM) $(NAME)
+OBJF	=	.cache_exists
 
-re:			fclean	all
+all:			$(NAME)
 
-bonus:		$(SRC:=.o)	$(BONUS:=.o)
-			ar rc $(NAME) $(SRC:=.o) $(BONUS:=.o)
+$(NAME): 		$(OBJ)
+				@echo "$(YELLOW)Compiling Libft...$(END)"
+				@ar rcs $(NAME) $(OBJ)
+				@echo "$(GREEN)Libft succesfully compiled!$(END)"
 
-.PHONY:		all clean fclean re bonus
+$(OBJ_DIR)/%.o:	src/%.c | $(OBJF)
+				@$(CC) $(CFLAGS) -c $(^) -o $(@)
+
+$(OBJ_DIR)/%.o:	bonus/%.c | $(OBJF)
+				@$(CC) $(CFLAGS) -c $(^) -o $(@)
+
+$(OBJF):
+				@mkdir -p $(OBJ_DIR)
+						
+clean: 		
+				@rm -rf $(OBJ_DIR)
+				@echo "$(RED)Libft objects deleted!$(END)"
+
+fclean: 		clean
+				@rm -rf $(NAME)
+				@echo "$(RED)Libft lib deleted!$(END)"
+
+re:				fclean	all
+
+bonus:			$(NAME) $(OBJ_B)
+				@echo "$(YELLOW)Compiling Libft bonus...$(END)"
+				@ar rcs $(NAME) $(OBJ_B)
+				@echo "$(GREEN)Libft bonus succesfully compiled!$(END)"
+
+.PHONY:			all clean fclean re bonus
