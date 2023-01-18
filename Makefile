@@ -6,7 +6,7 @@
 #    By: hcorrea- <hcorrea-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/03 14:23:46 by hcorrea-          #+#    #+#              #
-#    Updated: 2023/01/13 17:45:11 by hcorrea-         ###   ########.fr        #
+#    Updated: 2023/01/18 11:44:39 by hcorrea-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,7 +71,7 @@ $(OBJF):
 				@mkdir -p $(OBJ_DIR)
 
 clean:	
-				@$(RM) $(SRC:=.o) $(LIBFT_DIR:=.o)
+				@$(RM) $(OBJ_DIR)
 				@make -C $(LIBFT_DIR) clean
 				@make -C $(PRINFT_DIR) clean
 				@echo "$(RED)Push_Swap objects deleted!$(END)"
