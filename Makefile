@@ -6,85 +6,88 @@
 #    By: hcorrea- <hcorrea-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/03 14:23:46 by hcorrea-          #+#    #+#              #
-#    Updated: 2023/01/18 11:44:39 by hcorrea-         ###   ########.fr        #
+#    Updated: 2023/01/23 18:11:13 by hcorrea-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-GREEN		=	\033[0;32m
-RED			=	\033[0;31m
-YELLOW		=	\033[0;33m
-END			=	\033[0m
+GREEN			=	\033[0;32m
+RED				=	\033[0;31m
+YELLOW			=	\033[0;33m
+END				=	\033[0m
 
-CC			=	gcc
-CFLAGS		=	-Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR) -I$(PRINFT_DIR)
-RM			=	rm -rf
+PUSH_SWAP 		=	push_swap
 
-NAME		=	libpushswap.a
+PROJECTDIR		=	src
+INC 			=	inc
+OBJ_DIR			=	obj
+PUSH_SWAP_DIR	=	push_swap
+LIBFT_DIR		=	$(PROJECTDIR)/Libft
+HEADER			=	$(INC)/push_swap.h
+LIBFT_HEADER	=	$(LIBFT_DIR)/$(INC)/libft.h	
 
-LIBFT_DIR	=	Libft
-PRINFT_DIR	=	Printf
-INC_DIR		=	inc
+LIBFT_LIB		=	libft.a
+CC				=	gcc
+CFLAGS			=	-Wall -Wextra -Werror
 
-SRC			=	src/main.c					\
-				src/stack_utils.c			\
-				src/check_input.c			\
-				src/check_input_utils.c		\
-				src/push.c					\
-				src/rev_rotate.c			\
-				src/rotate.c				\
-				src/swap.c					\
-				src/general_utils.c			\
-				src/stack_utils2.c			\
-				src/sort_3.c				\
-				src/sort.c					\
-				src/position.c				\
-				src/stack_utils3.c			\
-				src/cost.c					\
+SRC				=	main.c					\
+					check_input.c			\
+					get_biggest_nbr.c		\
+					sort_5.c				\
+					sort_100.c				\
+					push.c					\
+					stack_utils.c			\
+					reverse_rotate.c		\
+					swap_rotate.c			\
+					sort_list.c				\
+					sort_10.c				\
+					sort_3.c				\
 
-BONUS		=	bonus/src/main.c			\
-				bonus/src/push.c			\
-				bonus/src/rev_rotate.c		\
-				bonus/src/stack_utils.c		\
-				bonus/src/swap.c			\
+OBJ				:=	$(addprefix $(OBJ_DIR)/$(PUSH_SWAP_DIR)/, $(SRC:.c=.o))
+LIBFT_FILE		:=	$(LIBFT_DIR)/$(LIBFT_LIB)
 
-OBJ		=	$(SRC:src/%.c=$(OBJ_DIR)/%.o)
-OBJ_B	=	$(BONUS:bonus/src/%.c=$(OBJ_DIR)/%.o)
-OBJ_DIR	=	obj
-OBJF	=	.cache_exists
+RM				=	rm -rf
+MKDIR			=	mkdir -p
+MAKE			=	make -C
+ERRIGNORE		=	2>/dev/null
 
-$(NAME):		$(OBJ)
-				@echo "$(YELLOW)Compiling Push_Swap...$(END)"
-				@ar rcs $(NAME) $(OBJ)
-				@make -C $(LIBFT_DIR) bonus
-				@make -C $(PRINFT_DIR)
-				@echo "$(GREEN)Push_Swap succesfully compiled!$(END)"
+.PHONY:				all clean fclean re norminette
 
-all:			$(NAME)
+all:				$(PUSH_SWAP)
+					@echo "$(GREEN)Push_Swap succesfully compiled!$(END)"
+					@sleep 2
+					@clear
 
-$(OBJ_DIR)/%.o:	src/%.c | $(OBJF)
-				@$(CC) $(CFLAGS) -c $(^) -o $(@)
+ft_libft:
+					@clear
+					@$(MAKE) $(LIBFT_DIR)
+					@echo "$(YELLOW)Compiling Push_Swap...$(END)"
 
-$(OBJ_DIR)/%.o:	bonus/src/%.c | $(OBJF)
-				@$(CC) $(CFLAGS) -c $(^) -o $(@)
+$(PUSH_SWAP):		ft_libft $(OBJ)
+					@$(CC) -I $(HEADER) -I $(LIBFT_HEADER) $(OBJ) $(LIBFT_DIR)/$(LIBFT_LIB) -o $@
 
-$(OBJF):
-				@mkdir -p $(OBJ_DIR)
+$(OBJ_DIR)/%.o:		$(PROJECTDIR)/%.c $(HEADER)
+					@$(MKDIR) $(dir $@)
+					@$(CC) $(CFLAGS) -I $(HEADER) -I $(LIBFT_HEADER) -o $@ -c $<
+										
+%.o:				%.c
+					@$(CC) $(CFLAGS) -I $(HEADER) -I $(LIBFT_HEADER) -o $@ -c $<
+					
+clean:
+					@$(RM) $(OBJ_DIR) $(ERRIGNORE)
+					@$(MAKE) $(LIBFT_DIR) clean
+					@clear
+					@echo "$(RED)All objects deleted!$(END)"
+					
+fclean:				clean
+					@$(RM) $(PUSH_SWAP)
+					@$(MAKE) $(LIBFT_DIR) fclean
+					@echo "$(RED)All libraries deleted!$(END)"
+					@sleep 2
+					@clear
 
-clean:	
-				@$(RM) $(OBJ_DIR)
-				@make -C $(LIBFT_DIR) clean
-				@make -C $(PRINFT_DIR) clean
-				@echo "$(RED)Push_Swap objects deleted!$(END)"
+re:					fclean all
 
-fclean:			clean
-				@$(RM) $(NAME)
-				@make -C $(LIBFT_DIR) fclean
-				@make -C $(PRINFT_DIR) fclean
-				@echo "$(RED)Push_Swap lib deleted!$(END)"
-
-bonus:			$(NAME) $(OBJ_B)
-				@echo "$(YELLOW)Compiling Push_Swap bonus...$(END)"
-				@ar rcs $(NAME) $(OBJ_B)
-				@echo "$(GREEN)Push_Swap bonus succesfully compiled!$(END)"
-
-re:				fclean all
+norminette:			
+					norminette
+					@clear
+					@echo "$(GREEN)Norminette check!$(END)"

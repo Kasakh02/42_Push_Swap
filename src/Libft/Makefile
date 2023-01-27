@@ -6,7 +6,7 @@
 #    By: hcorrea- <hcorrea-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/11 17:36:38 by hcorrea-          #+#    #+#              #
-#    Updated: 2023/01/13 11:57:55 by hcorrea-         ###   ########.fr        #
+#    Updated: 2023/01/23 15:19:58 by hcorrea-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,11 +56,9 @@ $(OBJF):
 						
 clean: 		
 				@rm -rf $(OBJ_DIR)
-				@echo "$(RED)Libft objects deleted!$(END)"
 
 fclean: 		clean
 				@rm -rf $(NAME)
-				@echo "$(RED)Libft lib deleted!$(END)"
 
 re:				fclean	all
 
