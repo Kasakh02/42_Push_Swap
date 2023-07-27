@@ -1,28 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstclear.c                                      :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hcorrea- <hcorrea-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/27 15:38:46 by hcorrea-          #+#    #+#             */
-/*   Updated: 2023/07/20 14:37:10 by hcorrea-         ###   ########.fr       */
+/*   Created: 2022/09/26 09:54:25 by hcorrea-          #+#    #+#             */
+/*   Updated: 2023/07/25 13:12:02 by hcorrea-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/libft.h"
 
-void	ft_lstclear(t_list **lst, void (*del)(int))
+int	ft_lstsize(t_list *lst)
 {
-	t_list	*temp;
+	int	i;
 
-	if (!*lst)
-		return ;
-	while (*lst)
+	i = 0;
+	if (!lst)
+		return (0);
+	while (lst)
 	{
-		temp = (*lst)->next;
-		ft_lstdelone(*lst, del);
-		*lst = temp;
+		i++;
+		lst = lst->next;
 	}
-	*lst = 0;
+	return (i);
 }
+
+/*int main()
+{
+	t_list *s1 = ft_lstnew("oi");
+	s1->next = ft_lstnew("tudo");
+	s1->next->next = ft_lstnew("bem");
+	printf("Numero de elementos da lista: %i", ft_lstsize(s1));
+}*/

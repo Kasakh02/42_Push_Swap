@@ -6,7 +6,7 @@
 /*   By: hcorrea- <hcorrea-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 14:18:05 by hcorrea-          #+#    #+#             */
-/*   Updated: 2023/07/22 19:45:53 by hcorrea-         ###   ########.fr       */
+/*   Updated: 2023/07/25 15:57:52 by hcorrea-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,25 @@ int	check(t_stack *stack, char *arg)
 	return (1);
 }
 
+t_stacks	*mallocs(void)
+{
+	t_stacks	*stacks;
+
+	stacks = malloc(sizeof(t_stacks));
+	stacks->stack_a = malloc(sizeof(t_stack));
+	stacks->stack_a->values = NULL;
+	stacks->stack_b = malloc(sizeof(t_stack));
+	stacks->stack_b->values = NULL;
+	stacks->moves = malloc(sizeof(char *) * 10000);
+	stacks->moves_count = 0;
+	if (!stacks || !stacks->stack_a || !stacks->stack_b || !stacks->moves)
+	{
+		free_stacks(stacks);
+		return (NULL);
+	}
+	return (stacks);
+}
+
 /**
  * @brief Initializes stack a with argv and stack b to NULL
  * 
@@ -101,16 +120,13 @@ int	check(t_stack *stack, char *arg)
 t_stacks	*init_stacks(int argc, char **argv)
 {
 	t_stacks	*stacks;
+	t_list		*new_node;
 	int			i;
 
 	i = 1;
-	stacks = malloc(sizeof(t_stacks));
-	stacks->stack_a = malloc(sizeof(t_stack));
-	stacks->stack_a->values = NULL;
-	stacks->stack_b = malloc(sizeof(t_stack));
-	stacks->stack_b->values = NULL;
-	stacks->moves = malloc(sizeof(char *) * 10000);
-	stacks->moves_count = 0;
+	stacks = mallocs();
+	if (!stacks)
+		return (NULL);
 	while (i < argc)
 	{
 		if (!check(stacks->stack_a, argv[i]))
@@ -118,7 +134,13 @@ t_stacks	*init_stacks(int argc, char **argv)
 			free_stacks(stacks);
 			return (NULL);
 		}
-		ft_lstadd_back(&stacks->stack_a->values, ft_lstnew(ft_atoi(argv[i])));
+		new_node = ft_lstnew(ft_atoi(argv[i]));
+		if (!new_node)
+		{
+			free_stacks(stacks);
+			return (NULL);
+		}
+		ft_lstadd_back(&stacks->stack_a->values, new_node);
 		i++;
 	}
 	return (stacks);

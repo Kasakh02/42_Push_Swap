@@ -6,7 +6,7 @@
 /*   By: hcorrea- <hcorrea-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 15:44:54 by hcorrea-          #+#    #+#             */
-/*   Updated: 2023/07/21 14:48:46 by hcorrea-         ###   ########.fr       */
+/*   Updated: 2023/07/25 15:49:52 by hcorrea-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
-# include "../Printf/inc/ft_printf.h"
+# include "../../Printf/inc/ft_printf.h"
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 4

@@ -6,7 +6,7 @@
 /*   By: hcorrea- <hcorrea-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 14:06:43 by hcorrea-          #+#    #+#             */
-/*   Updated: 2023/07/25 12:50:13 by hcorrea-         ###   ########.fr       */
+/*   Updated: 2023/07/27 11:38:12 by hcorrea-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,7 @@ int	is_sorted(t_stack *stack)
 		if (tmp->next)
 		{
 			if (tmp->content > tmp->next->content)
-			{
-				printf("%i %i\n", tmp->content, tmp->next->content);
 				return (0);
-			}
 		}
 		tmp = tmp->next;
 	}
@@ -101,7 +98,7 @@ void	read_operations(t_stacks *stacks)
 	char	*buff;
 
 	buff = get_next_line(0);
-	while (buff > 0)
+	while (buff)
 	{
 		execute_operation(buff, stacks);
 		free(buff);

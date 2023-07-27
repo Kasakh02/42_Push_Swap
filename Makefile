@@ -6,7 +6,7 @@
 #    By: hcorrea- <hcorrea-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/03 14:23:46 by hcorrea-          #+#    #+#              #
-#    Updated: 2023/07/24 19:23:47 by hcorrea-         ###   ########.fr        #
+#    Updated: 2023/07/25 14:35:57 by hcorrea-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,8 +44,9 @@ LIBFT_HEADER	=	$(LIBFT_DIR)/inc/libft.h
 LIBFT_LIB			=	libft.a
 LIBFT_FILE		:=	$(LIBFT_DIR)/$(LIBFT_LIB)
 
-PRINTF_DIR		=	Libft/Printf
-PRINTF_FILE		=	Libft/Printf/libftprintf.a
+PRINTF_DIR		=	Printf
+PRINTF_HEADER	=	$(PRINTF_DIR)/inc/printf.h
+PRINTF_FILE		=	Printf/libftprintf.a
 
 all:			$(PUSH_SWAP)
 
@@ -65,15 +66,16 @@ norminette:
 					fi; \
 					rm -f norminette_output.txt
 					
-$(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c | $(OBJ_DIR)
+$(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c $(INC_DIR)/*.h | $(OBJ_DIR)
 								@$(MKDIR) $(dir $@)
 								@$(CC) $(CFLAGS) -c $< -o $@
 
-$(CHECKER_OBJ_DIR)/%.o: $(CHECKER_DIR)/%.c | $(CHECKER_OBJ_DIR)
+$(CHECKER_OBJ_DIR)/%.o: $(CHECKER_DIR)/%.c $(INC_DIR)/*.h | $(CHECKER_OBJ_DIR)
 								@$(MKDIR) $(dir $@)
 								@$(CC) $(CFLAGS) -c $< -o $@
 
-$(PUSH_SWAP):	libft $(OBJ)
+$(PUSH_SWAP):	$(OBJ)
+					@$(MAKE) $(LIBFT_DIR)
 					@clear
 					@echo "$(YELLOW)Compiling Push_Swap...$(END)"
 					@$(CC) $(OBJ) $(CFLAGS) $(LIBFT_FILE) $(PRINTF_FILE) -o $@
@@ -81,7 +83,7 @@ $(PUSH_SWAP):	libft $(OBJ)
 					@sleep 0.5
 					@clear
 
-$(CHECKER):	all libft $(CHECKER_OBJ)
+$(CHECKER):	all $(CHECKER_OBJ)
 					@clear
 					@echo "$(YELLOW)Compiling Checker...$(END)"
 					@$(CC) $(CHECKER_OBJ) $(CFLAGS) $(LIBFT_FILE) $(PRINTF_FILE) -o $@
@@ -96,16 +98,9 @@ $(CHECKER_OBJ_DIR):
 					@$(MKDIR) $(CHECKER_OBJ_DIR)
 
 %.o:			%.c | $(OBJ_DIR)
-					@$(CC) $(CFLAGS) -I $(INC_DIR) -I $(LIBFT_HEADER) -c $< -o $@		
-
-libft:		$(LIBFT_FILE)
+					@$(CC) $(CFLAGS) -I $(INC_DIR) -I $(LIBFT_HEADER) -I $(PRINTF_HEADER) -c $< -o $@		
 
 checker:	$(CHECKER) $(PUSH_SWAP)
-
-$(LIBFT_FILE):
-					@$(MAKE) $(LIBFT_DIR)
-					@sleep 0.5
-					@clear
 
 clean:
 					@$(RM) $(OBJ_DIR) $(CHECKER_OBJ_DIR)
